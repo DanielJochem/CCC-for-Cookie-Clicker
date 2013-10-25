@@ -153,7 +153,7 @@ setTimeout(doSomething, 1000);
                             Game.UpgradesInStore[0].buy();
                         }
 
-                        /* prioritize time machines over everything */
+                        /* prioritize antimatter condensers over everything */
                         antimatterCondenser.buy();
 
                     })
