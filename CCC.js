@@ -176,12 +176,11 @@ var i = 0
     function buyUpgrades(){
         var products = document.getElementsByClassName('upgrade');
         for(i=0;i<products.length;i++) {
-if (i==74) {continue}
-if (i==87) {continue}
-if (i==85) {continue}
-products[i].click();
-}
-}
+            if (i != 74 && i != 84 && i != 85) {
+                products[i].click();
+            }
+        }
+    }
 
     function autoAction(name, action) {
         if (!options.buttons[name]) {
