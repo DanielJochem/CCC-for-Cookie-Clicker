@@ -4,7 +4,7 @@
     window.onload = function () {
         oldOnload();
         var script = document.createElement('script');
-        script.setAttribute('src', 'https://gist.github.com/DanielJochem/6930842/raw');
+        script.setAttribute('src', 'https://raw.github.com/DanielJochem/CCC-for-Cookie-Clicker/master/CCC-libs.js');
         document.body.appendChild(script);
     }
 
