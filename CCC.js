@@ -177,9 +177,11 @@ var i = 0
         for(i=0;i<=Game.UpgradesById.length;i++) {
             if((i != 74) && (i != 84) && (i != 85)) {
                 Game.UpgradesById[i].buy();
+            } else {
+                continue
             }
         }
-    } // Works without exeptions... just about to test exceptions
+    } // Still doesn't work...
 
     function autoAction(name, action) {
         if (!options.buttons[name]) {
