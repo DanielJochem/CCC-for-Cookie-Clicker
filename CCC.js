@@ -174,8 +174,10 @@ setTimeout(doSomething, 1000);
 var i = 0
 
     function buyUpgrades(){
-        for(i=0;i<200;i++) {
-            Game.UpgradesById[i].buy();
+        for(i=0;i<=Game.UpgradesById.length;i++) {
+            if((i != 74) && (i != 84) && (i != 85)) {
+                Game.UpgradesById[i].buy();
+            }
         }
     } // Works without exeptions... just about to test exceptions
 
