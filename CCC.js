@@ -174,13 +174,10 @@ setTimeout(doSomething, 1000);
 var i = 0
 
     function buyUpgrades(){
-        var products = document.getElementsByClassName('upgrade');
-        for(i=0;i<products.length;i++) {
-            if (i != 74 && i != 84 && i != 85) {
-                products[i].click();
-            }
+        for(i=0;i<200;i++) {
+            Game.UpgradesById[i].buy();
         }
-    }
+    } // Works without exeptions... just about to test exceptions
 
     function autoAction(name, action) {
         if (!options.buttons[name]) {
