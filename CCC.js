@@ -1,4 +1,4 @@
-// Autobuy buildings script
+ // Autobuy buildings script
 
     var oldOnload = window.onload;
     window.onload = function () {
@@ -174,14 +174,14 @@ setTimeout(doSomething, 1000);
 var i = 0
 
     function buyUpgrades(){
-        for(i=0;i<=Game.UpgradesById.length;i++) {
-            if((i != 74) && (i != 84) && (i != 85)) {
-                Game.UpgradesById[i].buy();
+        for(i=0;i<Game.UpgradesById.length;i++) {
+            if(i === 69 || i === 74 || i === 84 || i === 85) {
+                continue;
             } else {
-                continue
+                Game.UpgradesById[i].buy();
             }
         }
-    } // Still doesn't work...
+    } // WORKS!! WOO!!!!
 
     function autoAction(name, action) {
         if (!options.buttons[name]) {
