@@ -1,3 +1,8 @@
+// if you inist.. here is the formula
+Math.round(((Game.goldenCookie.time-Game.goldenCookie.minTime)/(Game.goldenCookie.maxTime-Game.goldenCookie.minTime)*300) + 150)
+ 
+ 
+ 
  // Autobuy buildings script
 
     var oldOnload = window.onload;
