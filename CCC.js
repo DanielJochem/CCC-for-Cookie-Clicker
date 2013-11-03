@@ -1,6 +1,8 @@
 // if you insist.. here is the formula
 Math.round(((Game.goldenCookie.time-Game.goldenCookie.minTime)/(Game.goldenCookie.maxTime-Game.goldenCookie.minTime)*300) + 150)
  
+// this is what Orteil uses to find out when to spawn a GC
+if (Game.goldenCookie.toDie==0 && Game.goldenCookie.life<=0 && Math.random()<Math.pow(Math.max(0,(Game.goldenCookie.time-Game.goldenCookie.minTime)/(Game.goldenCookie.maxTime-Game.goldenCookie.minTime)),6)) Game.goldenCookie.spawn();
  
  
  // Autobuy buildings script
