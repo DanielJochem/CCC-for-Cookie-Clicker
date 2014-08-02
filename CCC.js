@@ -1,33 +1,26 @@
-// if you insist.. here is the formula
-Math.round(((Game.goldenCookie.time-Game.goldenCookie.minTime)/(Game.goldenCookie.maxTime-Game.goldenCookie.minTime)*300) + 150)
- 
-// here is the formula that used to count down, not up
-Math.round((Game.goldenCookie.maxTime+Game.goldenCookie.minTime)/(Game.goldenCookie.time+Game.goldenCookie.minTime)*60)
- 
-// this is what Orteil uses to find out when to spawn a GC
-if (Game.goldenCookie.toDie==0 && Game.goldenCookie.life<=0 && Math.random()<Math.pow(Math.max(0,(Game.goldenCookie.time-Game.goldenCookie.minTime)/(Game.goldenCookie.maxTime-Game.goldenCookie.minTime)),6)) Game.goldenCookie.spawn();
- 
-  
- // Autobuy buildings script
-var oldOnload = window.onload;
-window.onload = function () {
-    oldOnload();
-    var script = document.createElement('script');
-    script.setAttribute('src', 'https://gist.github.com/DanielJochem/6930842/raw');
-    document.body.appendChild(script);
-}
+// ==UserScript==
+// @name         Cookie Clicker Cheats
+// @namespace    http://userscripts-mirror.org:8080/users/zackton
+// @description  Enable/Disable different cheats/hacks for Cookie Clicker
+// @include      http://orteil.dashnet.org/cookieclicker/
+// @include      orteil.dashnet.org/cookieclicker/
+// @updateURL    http://userscripts-mirror.org:8080/scripts/source/176985.meta.js
+// @require      http://userscripts-mirror.org:8080/scripts/source/187400.user.js
+// @require      http://userscripts-mirror.org:8080/scripts/source/276064.user.js
+// @icon         http://images2.wikia.nocookie.net/__cb20130827014914/cookieclicker/images/5/5a/PerfectCookie.png
+// @grant        none
+// @run-at       document-end
+// @version      1.8
+// ==/UserScript== 
 
-// end Autobuy buildings script
-
-// Will put calcCPS script here when done
-// Also will put numBeautify script here when done
-
+// Main wait loop
 setTimeout(doSomething, 1000);
 
 function doSomething() {
     var element = document.getElementById('particle0');
     if (typeof (element) != 'undefined' && element != null) {
 
+//Game particles have loaded, FIRE AWAY!
         (function () {
             var options = {
                 panelId: 'cookie-cheater',
@@ -42,29 +35,36 @@ function doSomething() {
                             })
                         }
                     },
-                    'autoGoldenCookie': {
-                        label: 'Autoclick Golden Cookie',
-                        action: function () {
-                            toggleAutoAction('autoGoldenCookie', function () {
-                                if (Game.goldenCookie.life >= 0 && (Game.frenzy <= 0 || Game.frenzyPower < 2 || Game.goldenCookie.chain > 0)) {
-                                    Game.goldenCookie.click();
-                                }
-                            })
-                        }
-                    },
                     'spawnGoldenCookie': {
-                        label: 'Spawn One GC',
+                        label: 'Spawn a Golden Cookie',
                         action: function () {
                             Game.goldenCookie.life = 0;
                             Game.goldenCookie.time = Game.goldenCookie.minTime;
                             Game.goldenCookie.spawn();
                         }
                     },
-                    'autoSpawnGoldenCookie': {
-                        label: 'Autospawn GCs',
+                    'autoGoldenCookie': {
+                        label: 'Autospawnclick GCs',
                         action: function () {
-                            toggleAutoAction('autoSpawnGoldenCookie', function () {
-                                options.buttons['spawnGoldenCookie'].action();
+                            toggleAutoAction('autoGoldenCookie', function () {
+                                if (Game.frenzy <= 0) {
+                                    Game.goldenCookie.time = Game.goldenCookie.minTime;
+                                    Game.goldenCookie.spawn();
+                                }
+                                if (Game.goldenCookie.last == "clot" || Game.goldenCookie.last == "ruin cookies") {
+                                    if (Game.elderWrath > 0) {
+                                        Game.goldenCookie.last = "blood frenzy"
+                                    } else {
+                                        Game.goldenCookie.last = "frenzy"
+                                    }
+                                    Game.frenzy = 1
+                                }
+                                if (Game.frenzy > 0) {
+                                    Game.goldenCookie.toDie = 1
+                                }
+                                 if (Game.goldenCookie.life >= 0 && (Game.frenzy <= 0 || Game.frenzyPower < 2 || Game.goldenCookie.chain > 0)) {
+                                    Game.goldenCookie.click();
+                                }
                             })
                         }
                     },
@@ -76,96 +76,19 @@ function doSomething() {
                             })
                         }
                     },
-                    'showGoldenCookieDelay': {
-                        label: 'Display GC Delay In Title',
+                    'fuckThemWrinklers': {
+                        label: 'Slaughter Wrinklers',
                         action: function () {
-                            toggleAutoAction('showGoldenCookieDelay', function () {
-                                document.title = '(' + Math.floor(Game.goldenCookie.delay / Game.fps) + ' s) ' + Beautify(Game.cookies) + ' ' + (Game.cookies == 1 ? 'cookie' : 'cookies')
+                            toggleAutoAction('fuckThemWrinklers', function () {
+                                setTimeout(function() { for (var i in Game.wrinklers) { var me=Game.wrinklers[i]; if (me.phase==2) { me.hurt=1; me.hp--; var x=me.x+(Math.sin(me.r*Math.PI/180)*100); var y=me.y+(Math.cos(me.r*Math.PI/180)*100); for (var ii=0;ii<4;ii++) { Game.particleAdd(x+Math.random()*50-25,y+Math.random()*50-25,Math.random()*4-2,Math.random()*-2-2,1,1,2,'wrinklerBits.png'); } } } }, 200);                            
                             })
                         }
                     },
-/*   'numberBeautify': {
-                label: 'Beautify Numbers',
-                action: function () {
-                    numBeautify();
-                }
-            },
-            'calculateCPS': {
-                label: 'AutoNext',
-                action: function () {
-                    calcCPS();
-                }
-            }, */
-                    'soundGC': {
-                        label: 'Play Sound When GC Spawns',
+                    'catchThemWonderdeer': {
+                        label: 'Capture the Deer',
                         action: function () {
-                            toggleAutoAction('soundGC', function () {
-                                if (Math.floor(Game.goldenCookie.delay / Game.fps) <= 0) {
-                                    theSound.play();
-                                }
-                            })
-                        }
-                    },
-                    'optimalWin': {
-                        label: 'Autowin',
-                        action: function () {
-                            toggleAutoAction('optimalWin', function () {
-
-                                /* auto-click big cookie and auto-spawn/auto-click golden cookie */
-                                Game.ClickCookie();
-                                Game.goldenCookie.life = 0;
-                                Game.goldenCookie.time = Game.goldenCookie.minTime;
-                                Game.goldenCookie.spawn();
-                                if (Game.goldenCookie.life >= 0 && (Game.frenzy <= 0 || Game.frenzyPower < 2 || Game.goldenCookie.chain > 0)) {
-                                    Game.goldenCookie.click();
-                                }
-                                
-                                /* vars */
-                                var cursorProduct = Game.Objects.Cursor;
-                                var antimatterCondenser = Game.ObjectsById[Game.ObjectsById.length - 1];
-                                var cursUpgrade;
-
-                                /* buy 10 cursors */
-                                if (cursorProduct.amount < 10) {
-                                    cursorProduct.buy();
-                                    return;
-                                }
-
-                                /* buy a bunch of cursor upgrades */
-                                cursUpgrade = Game.UpgradesById[0];
-                                if (!cursUpgrade.bought && cursUpgrade.unlocked) {
-                                    cursUpgrade.buy();
-                                    return;
-                                }
-                                cursUpgrade = Game.UpgradesById[1];
-                                if (!cursUpgrade.bought && cursUpgrade.unlocked) {
-                                    cursUpgrade.buy();
-                                    return;
-                                }
-                                cursUpgrade = Game.UpgradesById[2];
-                                if (!cursUpgrade.bought && cursUpgrade.unlocked) {
-                                    cursUpgrade.buy();
-                                    return;
-                                }
-                                cursUpgrade = Game.UpgradesById[75];
-                                if (!cursUpgrade.bought && cursUpgrade.unlocked) {
-                                    cursUpgrade.buy();
-                                    return;
-                                }
-                                cursUpgrade = Game.UpgradesById[76];
-                                if (!cursUpgrade.bought && cursUpgrade.unlocked) {
-                                    cursUpgrade.buy();
-                                    return;
-                                }
-
-                                /* buy upgrades if they are available in store and < 1/4 anti-matter condenser price */
-                                if (Game.UpgradesInStore.length > 0 && Game.UpgradesInStore[0].basePrice < antimatterCondenser.price / 4) {
-                                    buyUpgrades();
-                                }
-
-                                /* prioritize anti-matter condensers over everything */
-                                antimatterCondenser.buy();
-
+                            toggleAutoAction('catchThemWonderdeer', function () {           
+                                setTimeout(function(){if (Game.seasonPopup.life > 0) {Game.seasonPopup.click()}},Math.floor(((Math.random()*7)+3)*2500));
                             })
                         }
                     },
@@ -182,13 +105,87 @@ function doSomething() {
             }
 
             function buyUpgrades() {
-                for (i = 0; i < Game.UpgradesById.length; i++) {
-                    if (i === 69 || i === 74 || i === 79 || i === 83 || i === 84 || i === 85 || i === 91 || i === 124 || i === 142) {
+                for (var i = 0; i < Game.UpgradesById.length; i++) {
+                    if ((i > 63 && i < 75) || i === 79 || (i > 82 && i < 86) || i === 91 || i === 124 || (i > 140 && i < 143) || i === 167 || (i > 181 && i < 186)) {
                         continue;
                     } else {
-                        Game.UpgradesById[i].buy();
+                        if (Game.UpgradesById[i].unlocked === 1) { 
+                            if(Game.cookies >= Game.UpgradesById[i].basePrice) {                                
+                                Game.UpgradesById[i].buy(); 
+                            }
+                        }
                     }
                 }
+            }
+
+            //Lets bind some keys!!!
+            //Buys one of specified building
+            Mousetrap.bind('shift+1', function() { Game.ObjectsById[Game.ObjectsById.length - 11].buy(); }); //Cursor
+            Mousetrap.bind('shift+2', function() { Game.ObjectsById[Game.ObjectsById.length - 10].buy(); }); //Grandma
+            Mousetrap.bind('shift+3', function() { Game.ObjectsById[Game.ObjectsById.length - 9].buy(); }); //Farm
+            Mousetrap.bind('shift+4', function() { Game.ObjectsById[Game.ObjectsById.length - 8].buy(); }); //Factory
+            Mousetrap.bind('shift+5', function() { Game.ObjectsById[Game.ObjectsById.length - 7].buy(); }); //Mine
+            Mousetrap.bind('shift+6', function() { Game.ObjectsById[Game.ObjectsById.length - 6].buy(); }); //Shipment
+            Mousetrap.bind('shift+7', function() { Game.ObjectsById[Game.ObjectsById.length - 5].buy(); }); //Alchemy Lab
+            Mousetrap.bind('shift+8', function() { Game.ObjectsById[Game.ObjectsById.length - 4].buy(); }); //Portal
+            Mousetrap.bind('shift+9', function() { Game.ObjectsById[Game.ObjectsById.length - 3].buy(); }); //Time Machine
+            Mousetrap.bind('shift+0', function() { Game.ObjectsById[Game.ObjectsById.length - 2].buy(); }); //Antimatter Condenser
+            Mousetrap.bind('shift+-', function() { Game.ObjectsById[Game.ObjectsById.length - 1].buy(); }); //Prism
+
+            //Sells one of specified building
+            Mousetrap.bind('option+1', function() { Game.ObjectsById[Game.ObjectsById.length - 11].sell(); }); //Cursor
+            Mousetrap.bind('option+2', function() { Game.ObjectsById[Game.ObjectsById.length - 10].sell(); }); //Grandma
+            Mousetrap.bind('option+3', function() { Game.ObjectsById[Game.ObjectsById.length - 9].sell(); }); //Farm
+            Mousetrap.bind('option+4', function() { Game.ObjectsById[Game.ObjectsById.length - 8].sell(); }); //Factory
+            Mousetrap.bind('option+5', function() { Game.ObjectsById[Game.ObjectsById.length - 7].sell(); }); //Mine
+            Mousetrap.bind('option+6', function() { Game.ObjectsById[Game.ObjectsById.length - 6].sell(); }); //Shipment
+            Mousetrap.bind('option+7', function() { Game.ObjectsById[Game.ObjectsById.length - 5].sell(); }); //Alchemy Lab
+            Mousetrap.bind('option+8', function() { Game.ObjectsById[Game.ObjectsById.length - 4].sell(); }); //Portal
+            Mousetrap.bind('option+9', function() { Game.ObjectsById[Game.ObjectsById.length - 3].sell(); }); //Time Machine
+            Mousetrap.bind('option+0', function() { Game.ObjectsById[Game.ObjectsById.length - 2].sell(); }); //Antimatter Condenser
+            Mousetrap.bind('option+-', function() { Game.ObjectsById[Game.ObjectsById.length - 1].sell(); }); //Prism
+
+             // Awesome textParticle mod, mostly for execution of "Cookie Clicker Cheats v.X.X launched!" message.
+            Game.textParticlesAdd = function (text, el) {
+                //pick the first free (or the oldest) particle to replace it
+                var highest = 0;
+                var highestI = 0;
+                for (var i in Game.textParticles) {
+                    if (Game.textParticles[i].life == -1) {
+                        highestI = i;
+                        break;
+                    }
+                    if (Game.textParticles[i].life > highest) {
+                        highest = Game.textParticles[i].life;
+                        highestI = i;
+                    }
+                }
+                var i = highestI;
+                var x = (Math.random() - 0.5) * 40;
+                var y = 0; //+(Math.random()-0.5)*40;
+                if (!el) {
+                    var rect = l('game').getBoundingClientRect();
+                    var x = Math.floor((rect.left + rect.right) / 2);
+                    var y = Math.floor(((rect.bottom)) - 60);
+                    x += (Math.random() - 0.5) * 40;
+                    y += 0; //(Math.random()-0.5)*40;
+                }
+                var me = Game.textParticles[i];
+                if (!me.l) me.l = l('particle' + i);
+                me.life = 0;
+                me.x = x;
+                me.y = y - Game.textParticlesY;
+                if (me.y < 60) {
+                    for (var j = 0; j <= (rect.bottom); j++) {
+                        me.y += (me.y - 60);
+                    }
+                }
+                me.text = text;
+                me.l.innerHTML = text;
+                me.l.style.left = Math.floor(Game.textParticles[i].x - 200) + 'px';
+                me.l.style.bottom = Math.floor(-Game.textParticles[i].y) + 'px';
+                me.l.style.display = 'block';
+                Game.textParticlesY += 60;
             }
 
             function autoAction(name, action) {
@@ -247,12 +244,10 @@ function doSomething() {
                     document.body.appendChild(styles);
                 }
 
-                var css = '#' + options.panelId + '{position:fixed;top:0;right:0;padding:5px;z-index:9999;}#' + options.panelId + ' button{margin-left: 5px; font-family:\"Kavoon\"; color:#CD0000;}#' + options.panelId + ' button.active:after{content:"*";color:red;}';
+                var css = '#' + options.panelId + '{position:fixed;top:25px;right:0;padding:5px;z-index:9999;}#' + options.panelId + ' button{margin-left: 5px; font-family:\"Kavoon\"; color:#2ba39f;}#' + options.panelId + ' button.active:after{content:"*";color:#1E7471;}';
                 styles[(typeof document.body.style.WebkitAppearance == "string") ? "innerText" : "innerHTML"] = css;
             }
 
-            var delta = document.getElementById('javascriptError');
-            delta.parentNode.removeChild(delta);
             var link = document.createElement('a');
             link.setAttribute('href', 'http://orteil.dashnet.org/experiments/cookie/');
             link.target = 'blank';
@@ -271,24 +266,55 @@ function doSomething() {
                 var addb = document.getElementsByTagName('div')[2];
                 addb.insertBefore(document.createTextNode(' | '), add.lastChild);
                 addb.insertBefore(linkb, add.lastChild);
-            } else {
-                var linkc = document.createElement('a');
-                linkc.setAttribute('href', '../');
-                linkc.target = 'blank';
-                linkc.appendChild(
-                document.createTextNode('Live version'));
-                var addc = document.getElementsByTagName('div')[2];
-                addc.insertBefore(document.createTextNode(' | '), add.lastChild);
-                addc.insertBefore(linkc, add.lastChild);
             }
             var del = document.getElementById('links');
             del.parentNode.removeChild(del);
             return;
-
-            var goldenCookieRawSound = "http://dc144.4shared.com/img/926529133/bd50c11b/dlink__2Fdownload_2FiEhv4VrW_3Ftsid_3D20130907-80140-a0150fa0/preview.mp3";
-            var theSound = new Audio(goldenCookieRawSound);
-
         })();
+
+        var seasonalText;
+        var d = new Date();
+
+        if ((d.getMonth() == 1-1) && (d.getDate() == 1)) {
+            seasonalText = "Happy New Year!"
+        } else if ((d.getMonth() == 2-1) && (d.getDate() == 14)) {
+            seasonalText = "Happy Valentine's Day!"
+        } else if ((d.getMonth() == 3-1) && (d.getDate() == 17)) {
+            seasonalText = "Happy St. Patrick's Day!"
+        } else if ((d.getMonth() == 4-1) && (d.getDate() == 20)) {
+            seasonalText = "Happy Easter Sunday!"
+        } else if ((d.getMonth() == 7-1) && (d.getDate() == 4)) {
+            seasonalText = "Happy 4th of July!"
+        } else if ((d.getMonth() == 10-1) && (d.getDate() == 31)) {
+            seasonalText = "Happy Halloween!"
+        } else if ((d.getMonth() == 11-1) && (d.getDate() == 27)) {
+            seasonalText = "Happy Thanksgiving!"
+        } else if ((d.getMonth() == 12-1) && (d.getDate() == 25)) {
+            seasonalText = "Merry Christmas!"
+        }
+
+        if (typeof (seasonalText) != 'undefined' && seasonalText != null) {
+             var seasonText = seasonalText; 
+            var br1 = document.createElement('br');  
+            var br2 = document.createElement('br');  
+            var append = document.createElement('div');
+            append.setAttribute('id', 'seasonalText');
+            append.setAttribute('class', 'commentsText');
+            append.setAttribute('style', 'font-size:28px');
+            append.appendChild(
+            document.createTextNode(seasonText));
+            var add = document.getElementById('comments');
+            add.insertBefore(br1, add.lastChild);
+            add.insertBefore(br2, add.lastChild);
+            add.insertBefore(append, add.lastChild);
+            Game.Popup(seasonalText);
+        }
+
+        setInterval(function() {Game.WriteSave()},20000);
+
+        var script = document.createElement('script');
+        script.setAttribute('src', 'https://rawgit.com/DanielJochem/8142934/raw/e551a83c213c4862dd8ca417ddfc1e75444b6c18/libraries.js');
+        document.body.appendChild(script);
 
     } else {
         setTimeout(doSomething, 1000);
